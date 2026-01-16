@@ -1,0 +1,65 @@
+# ----------------------
+# Python
+# ----------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# ----------------------
+# Build / packaging
+# ----------------------
+build/
+dist/
+*.egg-info/
+
+# ----------------------
+# Testing / coverage
+# ----------------------
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ----------------------
+# OS / editor
+# ----------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ----------------------
+# Logs
+# ----------------------
+*.log
+
+# ----------------------
+# Jupyter
+# ----------------------
+.ipynb_checkpoints/
+
+# ----------------------
+# ML / data artifacts
+# ----------------------
+data/
+outputs/
+results/
+checkpoints/
+runs/
+
+# Model weights (usually large)
+*.pt
+*.pth
+*.onnx
+*.weights
+
+# ----------------------
+# Temporary files
+# ----------------------
+tmp/
+temp/

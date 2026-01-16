@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the following metadata."
+authors:
+  - family-names: Wilson
+    given-names: Joshua P.
+title: Drone Bird Detector
+version: 0.1.0
+doi: 10.0000/zenodo.DOICODE
+date-released: 2026-01-16
