@@ -3,7 +3,7 @@
 A command-line tool for detecting and identifying birds in drone imagery for ecological surveys.
 This software accompanies:
 
-**Wilson et al. (2026). Big Bird: A global dataset of birds in drone imagery annotated to species level. Remote Sensing in Ecology and Conservation. https://doi.org/10.1002/rse2.70059**
+**Wilson, J. P., Amano, T., Bregnballe, T., Corregidor-Castro, A., Francis, R., Gallego-García, D., Hodgson, J. C., Jones, L. R., Luque-Fernández, C. R., Marchowski, D., McEvoy, J., McKellar, A. E., Oosthuizen, W. C., Pfeifer, C., Renner, M., Sarasola, J. H., Sokač, M., Valle, R., Zbyryt, A., & Fuller, R. A. (2026). Big Bird: A global dataset of birds in drone imagery annotated to species level. Remote Sensing in Ecology and Conservation. https://doi.org/10.1002/rse2.70059**
 
 ---
 

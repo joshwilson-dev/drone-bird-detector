@@ -57,6 +57,7 @@ runs/
 *.pth
 *.onnx
 *.weights
+weights/
 
 # ----------------------
 # Temporary files
