@@ -96,7 +96,8 @@ Each row represents a detected bird with:
 * `confidence`: model confidence (0–1)
 * `xmin, ymin, xmax, ymax`: bounding box coordinates
 * `background`: background model confidence
-* `class_1`: class model confidence
+* `class_1`: class_1 model confidence
+* `class_2`: class_2 model confidence
 
 ---
 
