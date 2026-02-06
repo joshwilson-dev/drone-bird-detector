@@ -148,7 +148,7 @@ Please cite both the paper and the dataset when using this tool.
 1. Clone or install the package.
 2. Place your drone images in a folder.
 3. Run `drone-bird-detect` with the folder path.
-4. Manually review a proportion of the results to validate the models performance within the context of your dataset.
+4. Manually review a proportion of the results to validate the model's performance within the context of your dataset.
 5. Use the resulting CSV for ecological analysis, transect summaries, or reporting.
 
 ---
