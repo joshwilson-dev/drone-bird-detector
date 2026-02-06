@@ -19,18 +19,30 @@ This software accompanies:
 
 ## Installation
 
+The package can be installed from GitHub. GPU support is optional and can be enabled after installation.
+
 ### From GitHub (latest development version)
 
 ```bash
 git clone https://github.com/joshwilson-dev/drone-bird-detector.git
 cd drone-bird-detector
-python -m venv venv         # optional but recommended
-source venv/bin/activate    # Linux/macOS
-venv\Scripts\activate       # Windows
+python -m venv .venv          # optional but recommended
+source .venv/bin/activate     # Linux/macOS
+source .venv/Scripts/activate # Windows
 pip install -e .
 ```
 
----
+### GPU support (optional)
+
+By default, `drone-bird-detector` installs a **CPU-only** version of PyTorch, which works on any machine.
+
+If you have an NVIDIA GPU and want to enable GPU acceleration, install a CUDA-enabled PyTorch build **after** installing this package.
+
+Example for CUDA 12.1:
+
+```bash
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+```
 
 ## Usage
 
@@ -38,27 +50,33 @@ pip install -e .
 
 ```bash
 drone-bird-detector \
-  --images path/to/images \
-  --output results.csv \
-  --confidence 0.5 \
-  --device cpu
+  --input_folder path/to/images \
+  --input-gsd 0.005 \
+  --output results.csv
 ```
 
 ### Arguments
 
-| Argument       | Description                                                     |
-| -------------- | --------------------------------------------------------------- |
-| `--images`     | Path to a folder containing drone images (`.jpg`, `.png`, etc.) |
-| `--output`     | Path to the output CSV file (default: `results.csv`)            |
-| `--confidence` | Minimum confidence threshold for detections (default: `0.5`)    |
-| `--device`     | Device to run inference on (`cpu` or `cuda`)                    |
+| Argument | Description |
+| -------- | ----------- |
+| `--input_folder` | Path to a folder containing drone images (`.jpg`, `.png`, `.tif`). |
+| `--input-gsd` | Ground sample distance (GSD) of the input images in **meters per pixel**. All images are assumed to have the same GSD. |
+| `--box-score-thresh` | Minimum confidence score for a detection to be kept (default: `0.75`). When `--include-classes` is used, this threshold is applied **after class filtering** (and after renormalisation if enabled). |
+| `--box-nms-thresh` | Intersection-over-union (IoU) threshold for non-max suppression. Lower values remove overlapping boxes more aggressively (default: `0.2`). |
+| `--include-classes` | Path to a text file containing class names to include (one per line). Class names must exactly match those in `weights/labels.txt`. |
+| `--renormalise` | Renormalise class scores after applying `--include-classes`. When enabled, scores represent **conditional probabilities given the included classes**, rather than absolute model confidence.|
+| `--tile-width` | Width of image tiles in pixels (default: `1200`). |
+| `--tile-height` | Height of image tiles in pixels (default: `1200`). |
+| `--overlap` | Overlap between adjacent tiles in pixels (default: `400`). |
+| `--device` | Device used to run inference (`cpu` or `cuda`, default: `cpu`). |
+| `--batch_size` | Number of image tiles processed simultaneously by the model (default: `4`). |
 
 ### Example output CSV
 
 ```csv
-image,species,confidence,xmin,ymin,xmax,ymax
-img_001.jpg,Red Knot,0.87,120,50,180,110
-img_002.jpg,Bar-tailed Godwit,0.91,200,80,260,140
+image,species,confidence,xmin,ymin,xmax,ymax, background, class_1, class_2, ...
+img_001.jpg,Red Knot,0.87,120,50,180,110,0.01,0.05,0.02,...
+img_002.jpg,Bar-tailed Godwit,0.91,200,80,260,140,0.02,0.01,0.01,...
 ```
 
 Each row represents a detected bird with:
@@ -67,6 +85,8 @@ Each row represents a detected bird with:
 * `species`: predicted species
 * `confidence`: model confidence (0–1)
 * `xmin, ymin, xmax, ymax`: bounding box coordinates
+* `background`: background model confidence
+* `class_1`: class model confidence
 
 ---
 

@@ -1,0 +1,2 @@
+6;aves;pelecaniformes;pelecanidae;pelecanus;conspicillatus;adult;monomorphic;australian pelican - adult - monomorphic
+45;aves;pelecaniformes;pelecanidae;pelecanus;conspicillatus;chick;monomorphic;australian pelican - chick - monomorphic

@@ -36,7 +36,7 @@ def main():
         )
 
     parser.add_argument(
-        "--class-filter",
+        "--include-classes",
         type=str,
         default=None,
         help="Path to text file with included classes (one per line)."
@@ -45,7 +45,7 @@ def main():
     parser.add_argument(
         "--renormalise",
         action="store_true",
-        help="Renormalise probabilities after filtering classes."
+        help="Renormalise probabilities after filtering classes. Box-score-thresh applies to the renormalised scores."
         )
 
     parser.add_argument(
@@ -94,26 +94,19 @@ def main():
         device=args.device
         )
 
-    # Load allowed species if given
-    class_filter = None
-    if args.class_filter:
-        with open(args.class_filter) as f:
-            class_filter = [line.strip() for line in f if line.strip()]
-
     predict(
         model=model,
         labels=labels,
         input_folder=args.input_folder,
+        device=args.device,
         input_gsd=args.input_gsd,
         box_nms_thresh=args.box_nms_thresh,
-        # box_score_thresh=args.box_score_thresh,
-        # class_filter=args.class_filter,
-        # renormalise=args.renormalise,
         tile_width=args.tile_width,
         tile_height=args.tile_height,
         overlap=args.overlap,
-        device=args.device,
-        batch_size=args.batch_size
+        batch_size=args.batch_size,
+        included_classes=args.included_classes,
+        renormalise=args.renormalise
     )
 
 if __name__ == "__main__":

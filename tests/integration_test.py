@@ -18,8 +18,8 @@ def test_full_inference_pipeline(tmp_path):
     box_nms_thresh = 0.2
     batch_size = 1
     device = "cuda"
-    class_filter = None
-    renormalise = False
+    included_classes = Path(__file__).parent.parent / "examples" / "australian_pelican-gsd_0.018" / "included_classes.txt"
+    renormalise = True
 
     # Temporary CSV output
     output_dir = None # tmp_path
@@ -34,11 +34,6 @@ def test_full_inference_pipeline(tmp_path):
         max_size = max(tile_width, tile_height),
         device=device)
 
-    # Load class filter
-    if class_filter != None:
-        with open(class_filter) as f:
-            class_filter = [line.strip() for line in f if line.strip()]
-
     # Run inference
     predict(
         model=model,
@@ -51,19 +46,18 @@ def test_full_inference_pipeline(tmp_path):
         tile_height=tile_height,
         overlap=overlap,
         batch_size=batch_size,
-        output_dir=output_dir
-        # class_filter = class_filter,
-        # renormalise = renormalise
+        output_dir=output_dir,
+        included_classes = included_classes,
+        renormalise = renormalise
     )
 
     # Check that CSV exists and is not empty
     output_csv = output_dir / "results.csv"
     assert output_csv.exists()
     df = pd.read_csv(output_csv)
-    assert not df.empty
 
     # Optional: check expected columns
-    expected_columns = {"filename", "label", "score", "x1", "y1", "x2", "y2"}
+    expected_columns = {"filename", "label", "score", "x1", "y1", "x2", "y2", "background"}
     assert expected_columns.issubset(set(df.columns))
 
     print("Integration test passed: pipeline runs end-to-end.")

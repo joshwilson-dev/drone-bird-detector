@@ -4,6 +4,7 @@ import torch
 import torchvision
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 from .utils import load_labels
+from .roi_heads_multiclass import MultiClassRoIHeads
 
 MODEL_DIR = Path(__file__).parent.parent / "weights"
 HF_REPO_ID = "JoshuaWilson/drone-bird-detector"
@@ -79,6 +80,27 @@ def load_model(box_score_thresh, box_nms_thresh, min_size, max_size, device):
         num_classes = len(labels),
         **kwargs
         )
+    
+    # Replace RoIHeads with multiclass version
+    old_heads = model.roi_heads
+
+    model.roi_heads = MultiClassRoIHeads(
+        box_roi_pool=old_heads.box_roi_pool,
+        box_head=old_heads.box_head,
+        box_predictor=old_heads.box_predictor,
+
+        # Explicit inference knobs
+        score_thresh=box_score_thresh,
+        nms_thresh=box_nms_thresh,
+        detections_per_img=old_heads.detections_per_img,
+
+        # Training-only values (safe defaults)
+        fg_iou_thresh=0.5,
+        bg_iou_thresh=0.5,
+        batch_size_per_image=512,
+        positive_fraction=0.25,
+        bbox_reg_weights=old_heads.box_coder.weights,
+    )
     
     checkpoint = torch.load(model_file, map_location="cpu")
     model.load_state_dict(checkpoint["model"])
