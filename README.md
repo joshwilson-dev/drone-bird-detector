@@ -19,12 +19,6 @@ This software accompanies:
 
 ## Installation
 
-### From PyPI (recommended)
-
-```bash
-pip install drone-bird-detector
-```
-
 ### From GitHub (latest development version)
 
 ```bash
