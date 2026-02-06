@@ -84,7 +84,7 @@ The CLI will automatically download the weights the first time you run inference
 
 The annotated drone imagery dataset used to train this model is released under **CC BY 4.0** and available at:
 
-* [Dataset DOI or link]
+* https://doi.org/10.48610/27809f1
 
 Please cite both the paper and the dataset when using this tool.
 
