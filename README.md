@@ -17,6 +17,14 @@ This software accompanies:
 
 ---
 
+## Limitations
+
+Model performance is context-dependent and may not generalise across sites, species, or sensors.
+A proportion of detections should always be manually reviewed.
+Manual review is necessary to quantify model recall for each dataset context.
+
+---
+
 ## Installation
 
 The package can be installed from GitHub. GPU support is optional and can be enabled after installation.
@@ -139,7 +147,8 @@ Please cite both the paper and the dataset when using this tool.
 1. Clone or install the package.
 2. Place your drone images in a folder.
 3. Run `drone-bird-detect` with the folder path.
-4. Use the resulting CSV for ecological analysis, transect summaries, or reporting.
+4. Manually review a proportion of the results to validate the models performance within the context of your dataset.
+5. Use the resulting CSV for ecological analysis, transect summaries, or reporting.
 
 ---
 
