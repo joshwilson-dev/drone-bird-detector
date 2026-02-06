@@ -18,7 +18,7 @@ def predict(model, labels, input_folder: str, device: str,
             box_nms_thresh: float = 0.2, tile_width: int = 800,
             tile_height: int = 800, overlap: int = 200,
             input_gsd: float = 0.008, batch_size: int = 4,
-            output_dir: str | None = None,
+            output_folder: str | None = None,
             included_classes: str = None, renormalise: bool = False):
     """
     Run inference on all images in a folder.
@@ -39,7 +39,7 @@ def predict(model, labels, input_folder: str, device: str,
         Actual GSD of input images
     batch_size : int
         Number of tiles per batch
-    output_dir : str
+    output_folder : str
         Dir to write outputs to
     box_nms_thresh : float
         non-max score iou threshold
@@ -159,10 +159,11 @@ def predict(model, labels, input_folder: str, device: str,
             torch.cuda.empty_cache()
         
     # Save predictions
-    if output_dir == None:
-        output_dir = input_folder
+    if output_folder == None:
+        output_folder = input_folder
     else:
-        output_dir = Path(output_dir)
+        output_folder = Path(output_folder)
+        output_folder.mkdir(parents=True, exist_ok=True)
 
     # Save all predictions in csv
     if all_results:
@@ -176,12 +177,12 @@ def predict(model, labels, input_folder: str, device: str,
         score_cols = [f"{cls}" for cls in labels]
         df = pd.DataFrame(columns=base_cols + score_cols)
 
-    df.to_csv(output_dir / "results.csv", index=False)
+    df.to_csv(output_folder / "results.csv", index=False)
 
     # Save all predictions in coco format
-    save_coco_json(all_results, output_dir / "coco_annotations.json")
+    save_coco_json(all_results, output_folder / "coco_annotations.json")
 
     # Create a labels file for CVAT
-    generate_cvat_labels(all_results, output_dir / "cvat_labels.json")
+    generate_cvat_labels(all_results, output_folder / "cvat_labels.json")
 
-    print(f"Saved predictions to {Path(output_dir)}")
+    print(f"Saved predictions to {Path(output_folder)}")

@@ -34,14 +34,16 @@ pip install -e .
 
 ### GPU support (optional)
 
-By default, `drone-bird-detector` installs a **CPU-only** version of PyTorch, which works on any machine.
+By default, `drone-bird-detector` installs a **CPU-only** version of PyTorch, which works on any machine. 
+
+However, the CPU version is likely to run very slowly.
 
 If you have an NVIDIA GPU and want to enable GPU acceleration, install a CUDA-enabled PyTorch build **after** installing this package.
 
-Example for CUDA 12.1:
+Example for CUDA 12.6:
 
 ```bash
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install --force-reinstall torch torchvision --index-url https://download.pytorch.org/whl/cu126
 ```
 
 ## Usage
@@ -52,7 +54,7 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 drone-bird-detector \
   --input_folder path/to/images \
   --input-gsd 0.005 \
-  --output results.csv
+  --output-folder path/to/results
 ```
 
 ### Arguments

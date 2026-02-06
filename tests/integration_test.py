@@ -22,7 +22,7 @@ def test_full_inference_pipeline(tmp_path):
     renormalise = True
 
     # Temporary CSV output
-    output_dir = None # tmp_path
+    output_dir = tmp_path
     if output_dir == None:
         output_dir = input_folder
 

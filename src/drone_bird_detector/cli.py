@@ -8,10 +8,17 @@ def main():
         )
     
     parser.add_argument(
-        "--input_folder",
+        "--input-folder",
         type=str,
         required=True,
         help="Folder of images to predict"
+        )
+
+    parser.add_argument(
+        "--output-folder",
+        type=str,
+        required=True,
+        help="Folder where results will be saved"
         )
     
     parser.add_argument(
@@ -36,7 +43,7 @@ def main():
         )
 
     parser.add_argument(
-        "--include-classes",
+        "--included-classes",
         type=str,
         default=None,
         help="Path to text file with included classes (one per line)."
@@ -78,7 +85,7 @@ def main():
         )
 
     parser.add_argument(
-        "--batch_size",
+        "--batch-size",
         type=int,
         default=4,
         help="Number of patches to pass to the model at once."
@@ -106,7 +113,8 @@ def main():
         overlap=args.overlap,
         batch_size=args.batch_size,
         included_classes=args.included_classes,
-        renormalise=args.renormalise
+        renormalise=args.renormalise,
+        output_folder=args.output_folder
     )
 
 if __name__ == "__main__":
