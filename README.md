@@ -60,7 +60,7 @@ pip install --force-reinstall torch torchvision --index-url https://download.pyt
 
 ```bash
 drone-bird-detector \
-  --input_folder path/to/images \
+  --input-folder path/to/images \
   --input-gsd 0.005 \
   --output-folder path/to/results
 ```
