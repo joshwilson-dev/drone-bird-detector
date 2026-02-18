@@ -10,16 +10,8 @@ MODEL_DIR = Path(__file__).parent.parent / "weights"
 HF_REPO_ID = "JoshuaWilson/drone-bird-detector"
 HF_MODEL_FILE = "model.pth"
 HF_LABEL_FILE = "labels.txt"
+HF_LABEL_COUNTS_FILE = "label_counts.csv"
 HF_REVISION = "main"
-
-kwargs = {
-    "rpn_pre_nms_top_n_test": 250,
-    "rpn_post_nms_top_n_test": 250,
-    "rpn_nms_thresh": 0.5,
-    "rpn_score_thresh": 0.01,
-    "box_detections_per_img": 100,
-    "min_size": 800,
-    "max_size": 800}
 
 def download_model_if_needed() -> Path:
     """Download model from Hugging Face if it doesn't exist locally."""
@@ -53,14 +45,48 @@ def download_labels_if_needed() -> Path:
         print(f"Labels downloaded to {local_label_path}")
     return local_label_path
 
-def load_model(box_score_thresh, box_nms_thresh, min_size, max_size, device):
+def download_label_counts_if_needed() -> Path:
+    """Download labels.txt from Hugging Face if missing."""
+    local_label_counts_path = MODEL_DIR / HF_LABEL_COUNTS_FILE
+    if not local_label_counts_path.exists():
+        print("Label counts file not found locally. Downloading from Hugging Face...")
+        MODEL_DIR.mkdir(parents=True, exist_ok=True)
+        hf_hub_download(
+            repo_id=HF_REPO_ID,
+            filename=HF_LABEL_COUNTS_FILE,
+            revision=HF_REVISION,
+            local_dir=MODEL_DIR,
+            local_dir_use_symlinks=False
+        )
+        print(f"Labels downloaded to {local_label_counts_path}")
+    return local_label_counts_path
+
+def load_model(
+    box_score_thresh,
+    box_nms_thresh,
+    box_detections_per_img,
+    rpn_pre_nms_top_n_test,
+    rpn_post_nms_top_n_test,
+    rpn_nms_thresh,
+    rpn_score_thresh,
+    min_size,
+    max_size,
+    device,
+):
     """Load the PyTorch model, downloading if necessary."""
 
     # update the model parameters with args
-    kwargs["min_size"] = min_size
-    kwargs["max_size"] = max_size
-    kwargs["box_nms_thresh"] = box_nms_thresh
-    kwargs["box_score_thresh"] = box_score_thresh
+    kwargs = {
+        "rpn_pre_nms_top_n_test": rpn_pre_nms_top_n_test,
+        "rpn_post_nms_top_n_test": rpn_post_nms_top_n_test,
+        "rpn_nms_thresh": rpn_nms_thresh,
+        "rpn_score_thresh": rpn_score_thresh,
+        "box_detections_per_img": box_detections_per_img,
+        "min_size": min_size,
+        "max_size": max_size,
+        "box_nms_thresh": box_nms_thresh,
+        "box_score_thresh": box_score_thresh
+    }
 
     # check if model exists, if not download it.
     model_file = download_model_if_needed()
@@ -68,6 +94,9 @@ def load_model(box_score_thresh, box_nms_thresh, min_size, max_size, device):
     # check if labels exists, if not download it.
     labels_path = download_labels_if_needed()
     labels = load_labels(labels_path)
+
+    # check if label counts exists, if not download it.
+    label_counts_path = download_label_counts_if_needed()
 
     # create the model and load weights
     backbone = resnet_fpn_backbone(

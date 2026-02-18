@@ -54,7 +54,7 @@ def save_coco_json(all_results, output_json):
             "area": bbox[2] * bbox[3],
             "iscrowd": 0,
             "attributes": {
-                "score": res.get("score", 1.0)
+                "class_score": round(res.get("score", 1.0), 2)
                 }
         })
         annotation_id += 1
@@ -92,7 +92,7 @@ def generate_cvat_labels(results, output_file):
             "type": "any",
             "attributes": [
                 {
-                    "name": "score",
+                    "name": "class_score",
                     "input_type": "number",
                     "mutable": True,
                     "values": ["0", "1", "0.01"],

@@ -43,6 +43,41 @@ def main():
         )
 
     parser.add_argument(
+        "--rpn_pre_nms_top_n_test",
+        type=int,
+        default=250,
+        help="The number of proposals to keep before applying NMS (advanced)."
+        )
+    
+    parser.add_argument(
+        "--rpn_post_nms_top_n_test",
+        type=int,
+        default=250,
+        help="The number of proposals to keep after applying NMS (advanced)."
+        )
+
+    parser.add_argument(
+        "--rpn_nms_thresh",
+        type=float,
+        default=0.5,
+        help="NMS threshold used for postprocessing the RPN proposals (advanced)."
+        )
+
+    parser.add_argument(
+        "--rpn_score_thresh",
+        type=float,
+        default=0.01,
+        help="Only return proposals with an objectness score greater than this (advanced)."
+        )
+
+    parser.add_argument(
+        "--box_detections_per_img",
+        type=int,
+        default=100,
+        help="The maximum number of detections per tile, for all classes."
+        )
+
+    parser.add_argument(
         "--included-classes",
         type=str,
         default=None,
@@ -96,10 +131,17 @@ def main():
     model, labels = load_model(
         box_score_thresh=args.box_score_thresh,
         box_nms_thresh=args.box_nms_thresh,
+        box_detections_per_img=args.box_detections_per_img,
+
+        rpn_pre_nms_top_n_test=args.rpn_pre_nms_top_n_test,
+        rpn_post_nms_top_n_test=args.rpn_post_nms_top_n_test,
+        rpn_nms_thresh=args.rpn_nms_thresh,
+        rpn_score_thresh=args.rpn_score_thresh,
+
         min_size=min(args.tile_height, args.tile_width),
         max_size=max(args.tile_height, args.tile_width),
         device=args.device
-        )
+    )
 
     predict(
         model=model,

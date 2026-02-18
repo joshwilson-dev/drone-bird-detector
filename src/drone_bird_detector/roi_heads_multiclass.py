@@ -87,7 +87,7 @@ class MultiClassRoIHeads(RoIHeads):
                 continue
 
             # Recover proposal index for each kept detection
-            proposal_idx = proposal_ids[keep_idx].unique()
+            proposal_idx = proposal_ids[keep_idx]
             class_scores = fg_scores_i[proposal_idx]
             bg_class_scores = bg[proposal_idx]
 

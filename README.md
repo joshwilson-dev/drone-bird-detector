@@ -73,13 +73,18 @@ drone-bird-detector \
 | `--input-gsd` | Ground sample distance (GSD) of the input images in **meters per pixel**. All images are assumed to have the same GSD. |
 | `--box-score-thresh` | Minimum confidence score for a detection to be kept (default: `0.75`). When `--include-classes` is used, this threshold is applied **after class filtering** (and after renormalisation if enabled). |
 | `--box-nms-thresh` | Intersection-over-union (IoU) threshold for non-max suppression. Lower values remove overlapping boxes more aggressively (default: `0.2`). |
-| `--include-classes` | Path to a text file containing class names to include (one per line). Class names must exactly match those in `weights/labels.txt`. |
+| `--box_detections_per_img` | Maximum number of final detections returned **per tile**, across all classes (default: `100`). |
+| `--included-classes` | Path to a text file containing class names to include (one per line). Class names must exactly match those in `weights/labels.txt`. |
 | `--renormalise` | Renormalise class scores after applying `--include-classes`. When enabled, scores represent **conditional probabilities given the included classes**, rather than absolute model confidence.|
 | `--tile-width` | Width of image tiles in pixels (default: `1200`). |
 | `--tile-height` | Height of image tiles in pixels (default: `1200`). |
 | `--overlap` | Overlap between adjacent tiles in pixels (default: `400`). |
 | `--device` | Device used to run inference (`cpu` or `cuda`, default: `cpu`). |
 | `--batch_size` | Number of image tiles processed simultaneously by the model (default: `4`). |
+| `--rpn_pre_nms_top_n_test` | Number of highest-scoring RPN proposals to keep **before applying NMS** during inference (advanced, default: `250`). |
+| `--rpn_post_nms_top_n_test` | Number of RPN proposals to keep **after applying NMS** during inference. Controls how many proposals are passed to the second stage (advanced, default: `250`). |
+| `--rpn_nms_thresh` | IoU threshold used when applying NMS to RPN proposals (advanced, default: `0.5`). Lower values suppress overlapping proposals more aggressively. |
+| `--rpn_score_thresh` | Minimum objectness score required for an RPN proposal to be kept (advanced, default: `0.01`). Increasing this filters low-confidence proposals earlier. |
 
 ### Example output CSV
 
